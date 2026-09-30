@@ -74,6 +74,25 @@ describe CFONB::SequenceParser do
       end
     end
 
+    context 'with trade sequences' do
+      let(:input) { File.read('spec/files/sequences_trades.txt') }
+
+      it 'types their operation and complement records' do
+        expect(sequences[3].details.map(&:class)).to eq(
+          [
+            CFONB::LineParser::TradeDetail,
+            CFONB::LineParser::TradeComplementDetail,
+            CFONB::LineParser::TradeDetail,
+            CFONB::LineParser::TradeComplementDetail,
+          ],
+        )
+      end
+
+      it 'keeps an empty sequence' do
+        expect(sequences[0].details).to eq([])
+      end
+    end
+
     context 'with an IO' do
       subject(:sequences) { File.open('spec/files/sequences.txt') { described_class.new(_1).parse } }
 
