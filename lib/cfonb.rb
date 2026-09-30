@@ -5,6 +5,7 @@ require 'date'
 require_relative 'cfonb/refinements/strings'
 
 require_relative 'cfonb/error'
+require_relative 'cfonb/bank_account'
 require_relative 'cfonb/parser'
 require_relative 'cfonb/statement'
 require_relative 'cfonb/operation'
