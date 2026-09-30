@@ -2,7 +2,10 @@
 
 module CFONB
   class Parser
+    include RecordReader
     using CFONB::Refinements::Strings
+
+    LINE_LENGTH = 120
 
     CODES = [
       PREVIOUS_BALANCE_CODE = '01',
@@ -10,10 +13,6 @@ module CFONB
       OPERATION_DETAIL_CODE = '05',
       NEW_BALANCE_CODE = '07',
     ].freeze
-
-    def initialize(input)
-      @input = input
-    end
 
     def parse(optimistic: false)
       @statements = []
@@ -37,17 +36,10 @@ module CFONB
 
     private
 
-    attr_reader :input, :statements, :current_statement, :current_operation, :optimistic
+    attr_reader :statements, :current_statement, :current_operation
 
-    def each_line
-      input.each_line do |line|
-        (line.size / 120).times do |index|
-          start = index * 120
-          finish = start + 119
-
-          yield line[start..finish]
-        end
-      end
+    def split_records(line)
+      Array.new(line.size / LINE_LENGTH) { line[_1 * LINE_LENGTH, LINE_LENGTH] }
     end
 
     def parse_line(line)
@@ -99,10 +91,6 @@ module CFONB
       else
         handle_error(UnhandledLineCodeError)
       end
-    end
-
-    def handle_error(error)
-      raise error unless optimistic
     end
   end
 end
