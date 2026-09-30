@@ -2,7 +2,7 @@
 
 module CFONB
   module LineParser
-    class PreviousBalance < Base
+    class PreviousBalance < StatementRecord
       DICTIONARY = [
         ['amount', (90..103), proc { |value, instance| instance.send(:parse_amount, value) }],
       ].freeze
