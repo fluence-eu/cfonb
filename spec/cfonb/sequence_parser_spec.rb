@@ -66,6 +66,14 @@ describe CFONB::SequenceParser do
       end
     end
 
+    context 'with a position sequence' do
+      let(:input) { File.read('spec/files/sequences_positions.txt') }
+
+      it 'types its position records' do
+        expect(sequences.flat_map(&:details)).to all(be_a(CFONB::LineParser::PositionDetail))
+      end
+    end
+
     context 'with an IO' do
       subject(:sequences) { File.open('spec/files/sequences.txt') { described_class.new(_1).parse } }
 

@@ -25,6 +25,7 @@ require_relative 'cfonb/line_parser/sequence_record'
 require_relative 'cfonb/line_parser/sequence_header'
 require_relative 'cfonb/line_parser/sequence_detail'
 require_relative 'cfonb/line_parser/sequence_total'
+require_relative 'cfonb/line_parser/position_detail'
 
 require_relative 'cfonb/operation_details/base'
 require_relative 'cfonb/operation_details/lib'

@@ -5,6 +5,7 @@ module CFONB
     using CFONB::Refinements::Strings
 
     @parsers = {}
+    @detail_parsers = {}
 
     def self.register(code, klass)
       @parsers[code] = klass
@@ -12,6 +13,14 @@ module CFONB
 
     def self.for(code)
       @parsers[code]
+    end
+
+    def self.register_detail(sequence_code, record_code, klass)
+      @detail_parsers[[sequence_code, record_code]] = klass
+    end
+
+    def self.detail_for(sequence_code, record_code)
+      @detail_parsers.fetch([sequence_code, record_code], SequenceDetail)
     end
 
     def self.parse(input)
