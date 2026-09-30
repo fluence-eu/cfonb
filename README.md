@@ -92,8 +92,19 @@ cfonb = CFONB.parse(text)
 
 `CFONB.parse_sequences` reads files made of 240-character records grouped in sequences: one header record (`31`),
 any number of detail records, then one total record (`39`).
-Only the envelope is decoded: the header and total records are mapped to attributes, while detail records
-(`34`, or any other code found inside a sequence) are returned raw, with their `code`, `sequence_number` and `body`.
+The header and total records are mapped to attributes. Detail records are typed when their layout is known for the
+sequence operation code, and returned raw otherwise (`CFONB::LineParser::SequenceDetail`, with `code`,
+`sequence_number` and `body`):
+
+| Sequence | Record | Class | Content |
+| -------- | ------ | ----- | ------- |
+| `RQ` | `34` | `CFONB::LineParser::PositionDetail` | one security or cash position: `account`, `section` (`12` = cash), `isin`, `label`, `quotation_currency`, `nature` (`2` = quoted as a percentage), `quantity`, `valuation` (account currency), `price_in_account_currency`, `price`, `price_date`, `nominal`, `exchange_rate`, `cash?`, `percentage?` |
+| `AO` | `34` | `CFONB::LineParser::TradeDetail` | one trade: `operation_number`, `account`, `transaction_code` (`DIVI`, `PURC`, `SALE`, `REDE` seen), `booking_date`, `value_date`, `isin`, `quantity`, `currency`, `price`, `gross_amount`, `market_fees`, `settlement_currency`, `net_amount`, `exchange_rate` |
+| `AO` | `35` | `CFONB::LineParser::TradeComplementDetail` | the complement of the trade with the same `operation_number`: `currency`, `withholding_tax`, `commission`, `commission_tax`, `label`, `nominal`, `nominal_currency` |
+
+Amounts are signed `BigDecimal`s (explicit decimal point, leading `-`), dates are `Date`s, blank fields are `nil`.
+These layouts are not published by the CFONB: they were deduced from Edmond de Rothschild (France) statements and
+cross-checked arithmetically (quantity × price = valuation, gross − charges = net).
 
 ```ruby
 require 'cfonb'
