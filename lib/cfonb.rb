@@ -13,6 +13,7 @@ require_relative 'cfonb/operation_details'
 
 require_relative 'cfonb/line_parser'
 require_relative 'cfonb/line_parser/base'
+require_relative 'cfonb/line_parser/statement_record'
 require_relative 'cfonb/line_parser/previous_balance'
 require_relative 'cfonb/line_parser/operation'
 require_relative 'cfonb/line_parser/operation_details'

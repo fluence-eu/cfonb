@@ -7,16 +7,6 @@ module CFONB
     class Base
       using CFONB::Refinements::Strings
 
-      BASE_DICTIONARY = [
-        ['code', (0..1)].freeze,
-        ['bank', (2..6)],
-        ['branch', (11..15)],
-        ['currency', (16..18)],
-        ['scale', 19, proc { _1.to_i }], # rubocop:disable Style/SymbolProc
-        ['account', (21..31)],
-        ['date', (34..39), proc { |value, instance| instance.send(:parse_date, value) }],
-      ].freeze
-
       AMOUNT_SPECIFIERS = {
         'A' => { sign: 1, value: '1' },
         'B' => { sign: 1, value: '2' },
@@ -40,11 +30,11 @@ module CFONB
         '}' => { sign: -1, value: '0' },
       }.transform_values(&:freeze).freeze
 
-      attr_reader :body, *BASE_DICTIONARY.map(&:first)
+      attr_reader :body
 
       def initialize(input)
         @body = input
-        (BASE_DICTIONARY + self.class::DICTIONARY).each { parse_attribute(*_1) }
+        (self.class::BASE_DICTIONARY + self.class::DICTIONARY).each { parse_attribute(*_1) }
       end
 
       private
