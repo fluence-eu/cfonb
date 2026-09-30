@@ -1,0 +1,3 @@
+31000001AB280926E    123450000100012345601ACME HOLDING                                                                    CTR001                                                                                                                
+31000001CD290926E2EUR123450000100012345602ACME SERVICES                      123450000100012345602ACME SERVICES           CTR001                                                                                                                
+39000005CD300926E    123450000100012345602ACME SERVICES                                                                   CTR001FREE BANK SPECIFIC CONTENT                                                                          000000123456

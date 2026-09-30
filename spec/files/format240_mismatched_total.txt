@@ -1,0 +1,2 @@
+31000001AB280926E    123450000100012345601ACME HOLDING                                                                    CTR001                                                                                                                
+39000002AB290926E    543210000100012345602ACME HOLDING                                                                    CTR001FREE BANK SPECIFIC CONTENT                                                                                      

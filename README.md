@@ -2,7 +2,7 @@
 
 This parser aim at simplifying the parsing of CFONB structured files.
 Which are files structured with either 120 or 240 characters lines containing mostly bank statements.
-We aimed here only at the 120 characters version.
+We aimed here mostly at the 120 characters version; the 240 characters version is only decoded at the envelope level (see below).
 
 What CFONB means ? `Comité Français d’Organisation et de Normalisation Bancaire`
 
@@ -87,6 +87,41 @@ require 'cfonb'
 text = File.open('spec/files/example.txt')
 cfonb = CFONB.parse(text)
 ```
+
+## 240-character envelope
+
+`CFONB::Format240.parse` reads files made of 240-character lines grouped in sequences: one header record (`31`),
+any number of detail records, then one total record (`39`).
+Only the envelope is decoded: the header and total records are mapped to attributes, while detail records
+(`34`, or any other code found inside a sequence) are returned raw, as `code` and `line`.
+
+```ruby
+require 'cfonb'
+
+sequences = CFONB::Format240.parse(File.read('spec/files/format240_example.txt'))
+
+sequence = sequences.last
+sequence.operation_code     # => "CD"
+sequence.bank               # => "12345"
+sequence.branch             # => "00001"
+sequence.account            # => "00012345602"
+sequence.holder_name        # => "ACME SERVICES"
+sequence.currency_indicator # => "E"
+sequence.currency           # => "EUR" (nil when positions 18-21 are blank)
+sequence.decimals           # => 2 (nil when blank)
+sequence.previous_file_date # => "290926" (raw, its format is agreed with the bank)
+sequence.created_on         # => #<Date: 2026-09-30>
+sequence.total_amount       # => 123456 (in cents, nil when blank)
+sequence.rib                # => "12345000010001234560224"
+sequence.iban               # => "FR7612345000010001234560224"
+sequence.details.map(&:code) # => ["34", "35", "34"]
+sequence.details.first.line  # => the raw 240-character detail record
+```
+
+Lines must be exactly 240 characters long (`\n` or `\r\n` separated). The input is read as characters, without
+transcoding: decode it to the right encoding beforehand. Structural issues (wrong line length, record outside a
+sequence, unterminated sequence, wrong sequential numbering, total not matching its header, invalid date or amount)
+raise a subclass of `CFONB::ParserError` whose message includes the line number.
 
 ## Contributing
 

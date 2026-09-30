@@ -35,6 +35,12 @@ require_relative 'cfonb/operation_details/npo'
 require_relative 'cfonb/operation_details/nbu'
 require_relative 'cfonb/operation_details/unknown'
 
+require_relative 'cfonb/format240'
+require_relative 'cfonb/format240/error'
+require_relative 'cfonb/format240/detail'
+require_relative 'cfonb/format240/sequence'
+require_relative 'cfonb/format240/parser'
+
 module CFONB
   def self.parse(input, optimistic: false)
     Parser.new(input).parse(optimistic: optimistic)
