@@ -16,4 +16,14 @@ module CFONB
   class AlreadyDefinedOperationError < ParserError; end
 
   class UnhandledLineCodeError < ParserError; end
+
+  class InvalidLineLengthError < ParserError; end
+
+  class UnstartedSequenceError < ParserError; end
+
+  class UnfinishedSequenceError < ParserError; end
+
+  class InvalidSequenceNumberError < ParserError; end
+
+  class MismatchedSequenceTotalError < ParserError; end
 end

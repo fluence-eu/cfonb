@@ -8,7 +8,9 @@ require_relative 'cfonb/error'
 require_relative 'cfonb/bank_account'
 require_relative 'cfonb/record_reader'
 require_relative 'cfonb/parser'
+require_relative 'cfonb/sequence_parser'
 require_relative 'cfonb/statement'
+require_relative 'cfonb/sequence'
 require_relative 'cfonb/operation'
 require_relative 'cfonb/operation_details'
 
@@ -19,6 +21,10 @@ require_relative 'cfonb/line_parser/previous_balance'
 require_relative 'cfonb/line_parser/operation'
 require_relative 'cfonb/line_parser/operation_details'
 require_relative 'cfonb/line_parser/new_balance'
+require_relative 'cfonb/line_parser/sequence_record'
+require_relative 'cfonb/line_parser/sequence_header'
+require_relative 'cfonb/line_parser/sequence_detail'
+require_relative 'cfonb/line_parser/sequence_total'
 
 require_relative 'cfonb/operation_details/base'
 require_relative 'cfonb/operation_details/lib'
@@ -44,5 +50,9 @@ module CFONB
 
   def self.parse_operation(input, optimistic: false)
     Parser.new(input).parse_operation(optimistic: optimistic)
+  end
+
+  def self.parse_sequences(input, optimistic: false)
+    SequenceParser.new(input).parse(optimistic: optimistic)
   end
 end
