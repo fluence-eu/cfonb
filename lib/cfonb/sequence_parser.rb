@@ -67,7 +67,7 @@ module CFONB
       else
         raise UnstartedSequenceError.new("record '#{line.first(2)}' outside a sequence") unless current_sequence
 
-        line = CFONB::LineParser::SequenceDetail.new(line)
+        line = CFONB::LineParser.detail_for(current_sequence.operation_code, line.first(2)).new(line)
         check_sequence_number(line)
 
         current_sequence.details << line
