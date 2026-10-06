@@ -29,7 +29,6 @@ describe CFONB::SequenceParser do
           account: '00012345601',
           holder_name: 'ACME HOLDING',
           created_on: Date.new(2026, 9, 29),
-          total_amount: nil,
           details: [],
           header_line: lines[0],
           total_line: lines[1],
@@ -48,7 +47,6 @@ describe CFONB::SequenceParser do
           account: '00012345602',
           holder_name: 'ACME SERVICES',
           created_on: Date.new(2026, 9, 30),
-          total_amount: 123_456,
           header_line: lines[2],
           total_line: lines[6],
         )
@@ -180,9 +178,9 @@ describe CFONB::SequenceParser do
         CFONB::ParserError,
         "Line 2: Invalid date '310226' for line 310226",
       ],
-      'sequences_invalid_amount' => [
+      'sequences_invalid_record_count' => [
         CFONB::ParserError,
-        "Line 2: Invalid amount '00000012345A'",
+        "Line 2: Invalid record count '00000000000A'",
       ],
     }.each do |file, (error, message)|
       context "with #{file}.txt" do
@@ -214,6 +212,17 @@ describe CFONB::SequenceParser do
         expect { sequences }.to raise_error(
           CFONB::MismatchedSequenceTotalError,
           'Line 2: total record differs from its header on operation_code, branch',
+        )
+      end
+    end
+
+    context 'with a total whose record count differs from its details' do
+      let(:input) { File.read('spec/files/sequences.txt').sub('000000000003', '000000000002') }
+
+      it 'raises MismatchedSequenceTotalError' do
+        expect { sequences }.to raise_error(
+          CFONB::MismatchedSequenceTotalError,
+          'Line 7: total record counts 2 detail records, 3 found',
         )
       end
     end

@@ -18,24 +18,24 @@ describe CFONB::LineParser::SequenceTotal do
         'branch' => '00001',
         'account' => '00012345602',
         'holder_name' => 'ACME SERVICES',
-        'amount' => 123_456,
+        'record_count' => 3,
         'body' => input,
       )
     end
 
-    context 'with a blank amount' do
-      let(:input) { File.read('spec/files/sequences.txt').lines[1].chomp }
+    context 'with a non numeric record count' do
+      let(:input) { File.read('spec/files/sequences_invalid_record_count.txt').lines[1].chomp }
 
-      it 'leaves the amount empty' do
-        expect(line.amount).to be_nil
+      it 'raises a ParserError' do
+        expect { line }.to raise_error(CFONB::ParserError, "Invalid record count '00000000000A'")
       end
     end
 
-    context 'with a non numeric amount' do
-      let(:input) { File.read('spec/files/sequences_invalid_amount.txt').lines[1].chomp }
+    context 'with a blank record count' do
+      let(:input) { File.read('spec/files/sequences.txt').lines[1].chomp.tap { _1[128, 12] = ' ' * 12 } }
 
       it 'raises a ParserError' do
-        expect { line }.to raise_error(CFONB::ParserError, "Invalid amount '00000012345A'")
+        expect { line }.to raise_error(CFONB::ParserError, "Invalid record count ''")
       end
     end
   end

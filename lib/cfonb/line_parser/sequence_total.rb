@@ -6,7 +6,7 @@ module CFONB
       DICTIONARY = [
         *ENVELOPE_DICTIONARY,
         ['date', (10..15), proc { |value, instance| instance.send(:parse_date, value) }],
-        ['amount', (228..239), proc { |value, instance| instance.send(:parse_cents, value) }],
+        ['record_count', (128..139), proc { |value, instance| instance.send(:parse_record_count, value) }],
       ].freeze
 
       attr_reader(*DICTIONARY.map(&:first))
@@ -15,9 +15,8 @@ module CFONB
 
       private
 
-      def parse_cents(input)
-        return if input.empty?
-        raise ParserError.new("Invalid amount '#{input}'") unless input.match?(/\A\d{12}\z/)
+      def parse_record_count(input)
+        raise ParserError.new("Invalid record count '#{input}'") unless input.match?(/\A\d{12}\z/)
 
         input.to_i
       end
