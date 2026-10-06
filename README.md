@@ -2,7 +2,7 @@
 
 This parser aim at simplifying the parsing of CFONB structured files.
 Which are files structured with either 120 or 240 characters lines containing mostly bank statements.
-We aimed here mostly at the 120 characters version; the 240 characters version is decoded at the envelope level, and its detail records are typed for the known layouts (RQ/AO) and left raw otherwise (see below).
+We aimed here mostly at the 120 characters version; the 240 characters version is decoded at the envelope level, and its detail records are typed for the known layouts (RQ/RM/AO) and left raw otherwise (see below).
 
 What CFONB means ? `Comité Français d’Organisation et de Normalisation Bancaire`
 
@@ -98,7 +98,7 @@ sequence operation code, and returned raw otherwise (`CFONB::LineParser::Sequenc
 
 | Sequence | Record | Class | Content |
 | -------- | ------ | ----- | ------- |
-| `RQ` | `34` | `CFONB::LineParser::PositionDetail` | one security or cash position: `account`, `section` (`12` = cash), `isin`, `security_code`, `cash_currency`, `label`, `quotation_currency`, `nature` (`2` = quoted as a percentage), `quantity`, `valuation` (account currency), `price_in_account_currency`, `price`, `price_date`, `nominal`, `exchange_rate`, `cash?`, `percentage?` |
+| `RQ`, `RM` | `34` | `CFONB::LineParser::PositionDetail` | one security or cash position (`RQ` daily, `RM` monthly): `account`, `section` (`12` = cash), `isin`, `security_code`, `cash_currency`, `label`, `quotation_currency`, `nature` (`2` = quoted as a percentage), `quantity`, `valuation` (account currency), `price_in_account_currency`, `price`, `price_date`, `nominal`, `exchange_rate`, `cash?`, `percentage?` |
 | `AO` | `34` | `CFONB::LineParser::TradeDetail` | one trade: `operation_number`, `account`, `transaction_code` (`DIVI`, `PURC`, `SALE`, `REDE` seen), `booking_date`, `value_date`, `isin`, `quantity`, `currency`, `price`, `gross_amount`, `market_fees`, `settlement_currency`, `net_amount`, `exchange_rate` |
 | `AO` | `35` | `CFONB::LineParser::TradeComplementDetail` | the complement of the trade with the same `operation_number`: `currency`, `withholding_tax`, `commission`, `commission_tax`, `label`, `nominal`, `nominal_currency` |
 
