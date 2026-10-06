@@ -40,6 +40,7 @@ module CFONB
       end
 
       CFONB::LineParser.register_detail('RQ', '34', self)
+      CFONB::LineParser.register_detail('RM', '34', self)
     end
   end
 end
