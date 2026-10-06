@@ -18,7 +18,7 @@ describe CFONB::LineParser::PositionDetail do
           account: '00900119030',
           section: '02',
           line_currency: 'USD',
-          security_category: '067',
+          quotation_place: '067',
           security_code: 'US5949181045',
           cash_currency: nil,
           label: 'REG SHS MICROSOFT CORP USD 0.000',

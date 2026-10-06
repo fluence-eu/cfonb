@@ -99,7 +99,7 @@ sequence operation code, and returned raw otherwise (`CFONB::LineParser::Sequenc
 | Sequence | Record | Class | Content |
 | -------- | ------ | ----- | ------- |
 | `RQ`, `RM` | `34` | `CFONB::LineParser::PositionDetail` | one security or cash position (`RQ` daily, `RM` monthly): `account`, `section` (`12` = cash), `isin`, `security_code`, `cash_currency`, `label`, `quotation_currency`, `nature` (`2` = quoted as a percentage), `quantity`, `valuation` (account currency), `price_in_account_currency`, `price`, `price_date`, `nominal`, `exchange_rate`, `cash?`, `percentage?` |
-| `AO` | `34` | `CFONB::LineParser::TradeDetail` | one trade: `operation_number`, `account`, `transaction_code` (`DIVI`, `PURC`, `SALE`, `REDE` seen), `booking_date`, `value_date`, `isin`, `quantity`, `currency`, `price`, `gross_amount`, `market_fees`, `settlement_currency`, `net_amount`, `exchange_rate` |
+| `AO` | `34` | `CFONB::LineParser::TradeDetail` | one trade: `operation_number`, `account`, `transaction_code` (`DIVI`, `PURC`, `SALE`, `REDE` seen), `operation_date`, `value_date`, `isin`, `quantity`, `currency`, `price`, `gross_amount`, `market_fees`, `settlement_currency`, `net_amount`, `exchange_rate` |
 | `AO` | `35` | `CFONB::LineParser::TradeComplementDetail` | the complement of the trade with the same `operation_number`: `currency`, `withholding_tax`, `commission`, `commission_tax`, `label`, `nominal`, `nominal_currency` |
 
 Amounts are signed `BigDecimal`s (explicit decimal point, leading `-`), dates are `Date`s, blank optional fields are `nil`.

@@ -9,7 +9,7 @@ module CFONB
         ['account', (8..18)],
         ['section', (19..20)],
         ['line_currency', (21..23)],
-        ['security_category', (24..26), BLANK_TO_NIL],
+        ['quotation_place', (24..26), BLANK_TO_NIL],
         ['security_code', (27..38), BLANK_TO_NIL],
         ['cash_currency', (39..41), BLANK_TO_NIL],
         ['label', (51..82), BLANK_TO_NIL],
