@@ -74,6 +74,15 @@ describe CFONB::SequenceParser do
       end
     end
 
+    context 'with a monthly position sequence' do
+      let(:input) { File.read('spec/files/sequences_positions.txt').gsub(/^(3[19]\d{6})RQ/, '\\1RM') }
+
+      it 'types its position records' do
+        expect(sequences.map(&:operation_code)).to eq(%w[RM RM])
+        expect(sequences.flat_map(&:details)).to all(be_a(CFONB::LineParser::PositionDetail))
+      end
+    end
+
     context 'with trade sequences' do
       let(:input) { File.read('spec/files/sequences_trades.txt') }
 
