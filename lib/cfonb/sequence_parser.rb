@@ -59,6 +59,7 @@ module CFONB
         line = CFONB::LineParser.parse(line)
         check_sequence_number(line)
         check_identity(line)
+        check_record_count(line)
 
         current_sequence.merge_total(line)
         sequences << current_sequence
@@ -88,6 +89,14 @@ module CFONB
       return if mismatches.empty?
 
       raise MismatchedSequenceTotalError.new("total record differs from its header on #{mismatches.join(', ')}")
+    end
+
+    def check_record_count(line)
+      return if line.record_count == current_sequence.details.size
+
+      raise MismatchedSequenceTotalError.new(
+        "total record counts #{line.record_count} detail records, #{current_sequence.details.size} found",
+      )
     end
   end
 end

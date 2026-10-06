@@ -10,7 +10,7 @@ module CFONB
         operation_code previous_file_date
         currency_indicator decimals currency
         bank branch account holder_name
-        created_on total_amount
+        created_on
       ],
     )
 
@@ -31,7 +31,6 @@ module CFONB
     def merge_total(line)
       self.total_line = line.body
       self.created_on = line.date
-      self.total_amount = line.amount
     end
 
     def raw

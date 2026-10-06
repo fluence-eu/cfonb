@@ -122,7 +122,6 @@ sequence.currency            # => "EUR" (nil when positions 18-21 are blank)
 sequence.decimals            # => 2 (nil when blank)
 sequence.previous_file_date  # => "290926" (raw, its format is agreed with the bank)
 sequence.created_on          # => #<Date: 2026-09-30>
-sequence.total_amount        # => 123456 (in cents, nil when blank)
 sequence.rib                 # => "12345000010001234560224"
 sequence.iban                # => "FR7612345000010001234560224"
 sequence.details.map(&:code) # => ["34", "35", "34"]
@@ -131,7 +130,8 @@ sequence.details.first.body  # => the raw 240-character detail record
 
 Records must be exactly 240 characters long, one per line (`\n` or `\r\n` separated). The input is read as characters,
 without transcoding: decode it to the right encoding beforehand. Structural issues (wrong record length, record outside
-a sequence, unterminated sequence, wrong sequence numbering, total not matching its header, invalid date or amount)
+a sequence, unterminated sequence, wrong sequence numbering, total not matching its header or its detail record count,
+invalid date or record count)
 raise a subclass of `CFONB::ParserError` whose message starts with the line number. Like `CFONB.parse`, it accepts
 `optimistic: true` to skip the faulty records instead of raising.
 
